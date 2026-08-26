@@ -1,0 +1,40 @@
+name: Sync Spec Kit Skills
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: spec-kit-sync-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v7
+
+      - name: Generate skills with the official Specify CLI
+        run: ./scripts/sync.sh
+
+      - name: Validate generated repository
+        run: ./scripts/check.sh
+
+      - name: Commit changes when upstream content changed
+        run: |
+          if git diff --quiet; then
+            echo "No upstream changes to commit."
+            exit 0
+          fi
+          upstream_short_sha="$(python3 -c 'import json; print(json.load(open("UPSTREAM.json"))["commit"][:12])')"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add skills UPSTREAM.json THIRD_PARTY_NOTICES/spec-kit-LICENSE
+          git commit -m "chore: sync spec-kit ${upstream_short_sha}"
+          git push

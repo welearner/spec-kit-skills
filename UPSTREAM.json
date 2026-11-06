@@ -1,6 +1,6 @@
 {
   "repository": "https://github.com/github/spec-kit.git",
-  "ref": "main",
-  "commit": "3ca735b846afcbcf3304d571f296ec542464e08c",
-  "version": "1.3.2.dev0"
+  "ref": "v1.3.1",
+  "commit": "51f03cfccfe20e6744aefbb76c50521fdf306673",
+  "version": "1.3.1"
 }

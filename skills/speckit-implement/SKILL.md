@@ -5,7 +5,7 @@ compatibility: "Requires spec-kit project structure with .specify/ directory"
 metadata:
   author: "github-spec-kit"
   source: "templates/commands/implement.md"
-  version: "1.4.4"
+  version: "1.4.5.dev0"
 ---
 
 
